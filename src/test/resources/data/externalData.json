@@ -1,0 +1,12 @@
+{
+  "users":{
+    "pepitoUser":{"userName": "pepito201", "password": "pepitoAmigo201", "status": "inactive", "role": "admin" },
+    "mariaUser":{"userName": "Admin", "password": "admin123", "status": "active", "role": "admin" },
+    "joseUser":{"userName": "pepito201", "password": "pepitoAmigo201", "status": "active", "role": "normal" }
+  },
+  "CreditCards": {
+    "pepito": {"creditCard":  "4500784525692341", "CVV":  "074", "DueDate":  "02/26"}
+  },
+
+  "platform": "Test_01"
+}
