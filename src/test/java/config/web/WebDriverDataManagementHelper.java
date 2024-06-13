@@ -1,11 +1,11 @@
 package config.web;
 
+import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.testng.SkipException;
-import org.testng.log4testng.Logger;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,9 +19,9 @@ import java.util.UUID;
 
 import static config.web.WebDriverFactory.getCurrentPath;
 
+@Log
 public class WebDriverDataManagementHelper {
 
-    public static Logger log = Logger.getLogger(WebDriverDataManagementHelper.class);
     private static final String FORMAT_DATE = "yyyy-MM-dd'T'HH:mm:ss";
 
     public JSONObject testData = setTestData();

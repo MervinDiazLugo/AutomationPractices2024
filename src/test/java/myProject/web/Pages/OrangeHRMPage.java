@@ -2,6 +2,7 @@ package myProject.web.Pages;
 
 
 import config.web.WebDriverHelper;
+import lombok.extern.java.Log;
 import myProject.web.PageObjects.OrangeHRMPageObjects;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -11,7 +12,7 @@ import org.testng.Assert;
 import org.testng.SkipException;
 
 import java.util.List;
-
+@Log
 public class OrangeHRMPage extends WebDriverHelper {
     OrangeHRMPageObjects orangeHRMPageObjects = new OrangeHRMPageObjects();
     public void login(WebDriver driver, String user, String pass){

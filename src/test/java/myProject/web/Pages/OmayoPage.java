@@ -2,11 +2,13 @@ package myProject.web.Pages;
 
 
 import config.web.WebDriverHelper;
+import lombok.extern.java.Log;
 import myProject.web.PageObjects.OmayoPageObjects;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+@Log
 public class OmayoPage extends WebDriverHelper {
 
     OmayoPageObjects omayoPageObjects = new OmayoPageObjects();
@@ -16,7 +18,7 @@ public class OmayoPage extends WebDriverHelper {
         if(frame1Elem!=null){
             driver.switchTo().frame(frame1Elem);
             WebElement divQuestionFrame1Elem = getElement(driver, omayoPageObjects.divQuestionFrame1Loc);
-            System.out.println(divQuestionFrame1Elem.getText());
+            log.info(divQuestionFrame1Elem.getText());
         }
     }
 
@@ -26,7 +28,7 @@ public class OmayoPage extends WebDriverHelper {
             driver.switchTo().frame(frame2Elem);
             WebElement divQuestionFrame2Elem = getElement(driver, omayoPageObjects.divQuestionFrame2Loc);
             if(divQuestionFrame2Elem!=null){
-                System.out.println(divQuestionFrame2Elem.getText());
+                log.info(divQuestionFrame2Elem.getText());
             }
 
         }

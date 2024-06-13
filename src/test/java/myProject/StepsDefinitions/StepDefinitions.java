@@ -3,6 +3,7 @@ package myProject.StepsDefinitions;
 import config.web.WebDriverProperties;
 import io.cucumber.java.en.*;
 
+import lombok.extern.java.Log;
 import myProject.web.Pages.OrangeHRMPage;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Assertions.*;
@@ -10,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
+@Log
 public class StepDefinitions {
 
     WebDriver driver = null;
@@ -22,7 +24,7 @@ public class StepDefinitions {
 
     @Given("^an example scenario$")
     public void anExampleScenario() {
-        System.out.println("Hola Mundo!");
+        log.info("Hola Mundo!");
         driver.getCurrentUrl();
         driver.getTitle();
     }

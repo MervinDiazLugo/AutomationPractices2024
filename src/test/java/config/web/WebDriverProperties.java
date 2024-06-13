@@ -1,9 +1,12 @@
 package config.web;
 
+import lombok.extern.java.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+@Log
 public class WebDriverProperties {
     private final Properties PROPERTIES = new Properties();
     private static final String GLOBAL_DATA_FILE_LOCATION = "/webDriverTest.properties";
