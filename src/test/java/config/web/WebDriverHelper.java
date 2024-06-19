@@ -1,19 +1,18 @@
 package config.web;
 
+import io.cucumber.datatable.DataTable;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.*;
 import org.testng.SkipException;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Log
 public class WebDriverHelper extends WebDriverDataManagementHelper{
@@ -123,6 +122,37 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
                 .build();
     }
 
+    /**
+     * click using generic xpath
+     *
+     * @param locator text used as reference
+     */
+    public void click(WebDriver driver, By locator) {
+        WebElement elem = getElement(driver, locator);
+        if (elem != null) {
+            elem.click();
+            log.info(locator + " clicked");
+        } else {
+            throw new SkipException("Locator was not present " + locator);
+        }
+    }
+
+    /**
+     * click using generic xpath
+     *
+     * @param locator text used as reference
+     */
+    public void jsSendKeys(WebDriver driver,By locator, String value) {
+        JavascriptExecutor jse = (JavascriptExecutor) driver;
+        WebElement elem = getElement(driver, locator);
+        if (elem != null) {
+            jse.executeScript(String.format("arguments[0].value='%s';", value), elem);
+            log.info(locator + " value set by Js " + value);
+        } else {
+            throw new SkipException("Locator was not present " + locator);
+        }
+    }
+
     public void scrollToElement(WebDriver driver, By locator) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         log.info("Scrolling to element: " + locator.toString());
@@ -220,5 +250,70 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
     }
 
 
+    /**
+     * Create a table with parameters given on feature step.
+     *
+     * @param table is a list with parameters given on step.
+     */
+    public DataTable createDataTable(List<List<String>> table) {
+        DataTable data;
+        data = DataTable.create(table);
+        log.info(data.toString());
+        return data;
+    }
+
+
+    public void selectOptionDropdownByText(WebDriver driver, By locator, String optionToSelect) {
+        log.info("Select option: " + optionToSelect + " by text");
+        WebElement selectElm = getElement(driver, locator);
+        if (selectElm != null) {
+            Select select = new Select(selectElm);
+            List<WebElement> selectListOpt = select.getOptions();
+            Optional<WebElement> matchingOption = selectListOpt.stream()
+                    .filter(option -> option.getText().equals(optionToSelect))
+                    .findFirst();
+            matchingOption.ifPresent(elm -> elm.click());
+
+        } else {
+            throw new SkipException("Locator was not present " + locator);
+        }
+
+    }
+
+    public void selectOptionDropdownByValue(WebDriver driver, By locator, String option) {
+        log.info(String.format("Waiting Element: %s", locator));
+        WebElement elem = getElement(driver, locator);
+        if (elem != null) {
+            Select opt = new Select(elem);
+            log.info("Select option: " + option + " by value");
+            opt.selectByValue(option);
+        } else {
+            throw new SkipException("Locator was not present " + locator);
+        }
+    }
+
+    public void selectOptionDropdownByIndex(WebDriver driver, By locator, int option) {
+        log.info(String.format("Waiting Element: %s", locator));
+        WebElement elem = getElement(driver, locator);
+        if (elem != null) {
+            Select opt = new Select(elem);
+            log.info("Select option: " + option + " by index");
+            opt.selectByIndex(option);
+        } else {
+            throw new SkipException("Locator was not present " + locator);
+        }
+    }
+
+
+    /**
+     * click using generic xpath
+     *
+     * @param locator text used as reference
+     */
+    public String getAttribute(WebElement locator, String attribute) {
+        String value = locator.getAttribute(attribute);
+        log.info(locator + " return the value " + value);
+        return value;
+    }
 
 }

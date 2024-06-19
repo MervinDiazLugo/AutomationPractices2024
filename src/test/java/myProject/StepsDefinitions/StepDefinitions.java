@@ -4,12 +4,15 @@ import config.web.WebDriverProperties;
 import io.cucumber.java.en.*;
 
 import lombok.extern.java.Log;
+import myProject.web.Pages.EmergenciasPage;
 import myProject.web.Pages.OrangeHRMPage;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Assertions.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+
+import java.util.List;
 
 @Log
 public class StepDefinitions {
@@ -20,6 +23,8 @@ public class StepDefinitions {
     }
 
     OrangeHRMPage orangeHRMPage = new OrangeHRMPage();
+
+    EmergenciasPage emergenciasPage = new EmergenciasPage();
     WebDriverProperties wdp = new WebDriverProperties();
 
     @Given("^an example scenario$")
@@ -77,5 +82,41 @@ public class StepDefinitions {
     @When("^the Admin user is Logged in$")
     public void theAdminUserIsLoggedIn() {
         orangeHRMPage.loginAdminUser(driver);
+    }
+
+
+    @Given("^I am waiting for the first step pages to load$")
+    public void iAmWaitingForTheFirstStepPagesToLoad() {
+        emergenciasPage.waitForFirstStepElements(driver);
+    }
+
+    @Then("^I am filling the following text boxes:$")
+    public void iAmFillingTheFollowingTextBoxes(List<List<String>> table) {
+        emergenciasPage.setFirstStepTextBoxes(driver, table);
+    }
+
+    @And("^click on (.*?) button$")
+    public void clickOnCotizaButton(String tag) {
+        emergenciasPage.clickOnButtons(driver, tag);
+    }
+
+    @And("^I wait for second step elements are loaded$")
+    public void iWaitForSecondStepElementsAreLoaded() {
+        emergenciasPage.waitForSecondStepElements(driver);
+    }
+
+    @Then("I fill following text boxes:")
+    public void iFillFollowingTextBoxes(List<List<String>> table) {
+        emergenciasPage.setFirstStepTextBoxes(driver, table);
+    }
+
+    @And("^I am waiting for the last step elements to load$")
+    public void iWaitForLastStepElementsAreLoaded() {
+        emergenciasPage.waitForLastStepElements(driver);
+    }
+
+    @Then("I am filling out the registration form with values:")
+    public void iFillRegistrationFormWithValues(List<List<String>> table) {
+        emergenciasPage.setLastStepTextBoxes(driver, table);
     }
 }
