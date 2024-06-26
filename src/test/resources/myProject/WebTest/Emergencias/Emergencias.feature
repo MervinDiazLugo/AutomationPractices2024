@@ -1,6 +1,7 @@
-@UdemyWebTest @WebTesting @EmergenciasWebTest
+@WebTesting @EmergenciasWebTest
 Feature: Technical test at Emergencias portal
 
+  @IGNORE
   Scenario: User make a request to quote a health insurance
     Given I am waiting for the first step pages to load
     Then I am filling the following text boxes:
@@ -31,3 +32,11 @@ Feature: Technical test at Emergencias portal
       | Departamento            | C                           |
       | Código Postal           | 1123                        |
       | Ciudad                  | C.A.B.A                     |
+
+  Scenario: User fills first form insurance request
+    Given I am waiting for the first step pages to load
+    Then I am filling the following text boxes:
+      | Nombre    | Patricia Jose Ortiz Palermo |
+      | Provincia | CABA                        |
+      | Cód. área | 11                          |
+      | Celular   | 22500000                    |

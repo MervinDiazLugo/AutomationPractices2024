@@ -1,7 +1,9 @@
 package config.web;
 
 import io.cucumber.datatable.DataTable;
+import io.cucumber.java.Scenario;
 import lombok.extern.java.Log;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Action;
@@ -9,10 +11,15 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
 import org.testng.SkipException;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+
+import static config.web.WebDriverFactory.getCurrentPath;
 
 @Log
 public class WebDriverHelper extends WebDriverDataManagementHelper{
@@ -314,6 +321,28 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         String value = locator.getAttribute(attribute);
         log.info(locator + " return the value " + value);
         return value;
+    }
+
+    public void takeScreenShot(WebDriver driver) throws IOException {
+        log.info("Saving screen shot");
+        File destFile = new File(getCurrentPath() + "/target/screenshots/"
+                + UUID.randomUUID()
+                + ".jpg");
+        FileUtils.copyFile(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE), destFile);
+    }
+
+    public void takeScreenShot(WebDriver driver, Scenario scenario) throws IOException {
+        log.info("Saving screen shot");
+        byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        File destFile = new File(getCurrentPath() + "/target/screenshots/"
+                + scenario.getName()
+                + scenario.getId() + ".jpg");
+
+        scenario.attach(screenshot, "jpg", scenario.getId()
+                + "_"
+                + scenario.getName().replace(" ", "_")
+                + ".jpg");
+        FileUtils.copyFile(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE), destFile);
     }
 
 }
