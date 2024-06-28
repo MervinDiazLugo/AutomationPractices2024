@@ -12,8 +12,12 @@ public class Hooks {
 
     public static WebDriver driver;
 
-    @Before
+    @Before("@WebTesting")
     public void initWebDriver(Scenario scenario) throws Exception {
+
+        log.info("***************************************************");
+        log.info("[ Scenario ] - " + scenario.getName());
+        log.info("***************************************************");
         driver =  WebDriverConfig.initSeleniumConfig();
     }
 

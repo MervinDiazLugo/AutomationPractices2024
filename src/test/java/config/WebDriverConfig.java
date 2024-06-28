@@ -7,12 +7,10 @@ import org.openqa.selenium.WebDriver;
 
 @Log
 public class WebDriverConfig {
-
+    private static WebDriverProperties webDriverProperties = new WebDriverProperties();
     public static WebDriver initSeleniumConfig() throws Exception {
-        WebDriverProperties webDriverProperties = new WebDriverProperties();
 
         String platform = webDriverProperties.getPlatformName();
-        String urlBase = webDriverProperties.getUrlBase();
         WebDriver driver;
 
         log.info("**********************************************************************************************");
@@ -21,7 +19,9 @@ public class WebDriverConfig {
         log.info("*********************************************************************************************");
 
         /** **** Load the driver ****** */
-        driver = WebDriverFactory.createNewDriver(platform, urlBase);
+        driver = WebDriverFactory.createNewDriver(
+                webDriverProperties.getPlatformName(),
+                webDriverProperties.getUrlBase());
 
         return driver;
     }

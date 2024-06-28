@@ -3,8 +3,11 @@
 <suite name="Emergencias sign up">
 
     <test thread-count="1" name="Test" parallel="tests">
+        <parameter name="webdriver.env" value="TST"/>
+        <parameter name="webdriver.client" value="orange"/>
         <classes>
-            <class name="myProject.runners.web.EmergenciasWebRunner"/>
+            <class name="myProject.runners.web.OrangeWebRunner"/>
         </classes>
+
     </test>
 </suite>

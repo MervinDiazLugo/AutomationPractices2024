@@ -17,7 +17,7 @@
         <com.google.code.gson>2.10.1</com.google.code.gson>
         <maven.common.plugin>3.0.0-M1</maven.common.plugin>
         <maven.cucumber.reporting.version>5.7.8</maven.cucumber.reporting.version>
-        <suiteFile>EmergenciasWebRunner.xml,</suiteFile>
+        <suiteFile>EmergenciasWebRunnerWithParams.xml,</suiteFile>
     </properties>
 
     <dependencyManagement>
