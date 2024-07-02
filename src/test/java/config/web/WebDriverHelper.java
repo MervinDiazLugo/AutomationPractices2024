@@ -22,20 +22,19 @@ import java.util.UUID;
 import static config.web.WebDriverFactory.getCurrentPath;
 
 @Log
-public class WebDriverHelper extends WebDriverDataManagementHelper{
+public class WebDriverHelper extends WebDriverDataManagementHelper {
 
     final Duration EXPLICIT_TIMEOUT = Duration.ofSeconds(15);
 
     public HashMap<String, String> windowsHandle = new HashMap<>();
 
-
-    public WebElement getElement(WebDriver driver, By loc){
+    public WebElement getElement(WebDriver driver, By loc) {
         return isWebElementDisplayed(driver, loc)
                 ? driver.findElement(loc)
                 : null;
     }
 
-    public List<WebElement> getElements(WebDriver driver, By loc){
+    public List<WebElement> getElements(WebDriver driver, By loc) {
         return isWebElementDisplayed(driver, loc)
                 ? driver.findElements(loc)
                 : null;
@@ -57,7 +56,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
     }
 
 
-    public Alert isAlertPresent(WebDriver driver){
+    public Alert isAlertPresent(WebDriver driver) {
         Alert simpleAlert = null;
         try {
             WebDriverWait wait = new WebDriverWait(driver, EXPLICIT_TIMEOUT);
@@ -76,7 +75,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         if (windowsHandle.containsKey(windowsName)) {
             driver.switchTo().window(windowsHandle.get(windowsName));
             log.info(String.format("I go to Windows: %s with value: %s ",
-                            windowsName, windowsHandle.get(windowsName)));
+                    windowsName, windowsHandle.get(windowsName)));
         } else {
             for (String winHandle : driver.getWindowHandles()) {
                 for (String entry : windowsHandle.keySet()) {
@@ -85,9 +84,9 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
                     if (!alreadyExist) {
                         windowsHandle.put(windowsName, winHandle);
                         log.info("The New window "
-                                        + windowsName
-                                        + " was saved in scenario with value "
-                                        + windowsHandle.get(windowsName));
+                                + windowsName
+                                + " was saved in scenario with value "
+                                + windowsHandle.get(windowsName));
                         driver.switchTo().window(winHandle);
                         break;
                     }
@@ -105,24 +104,24 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         }
     }
 
-    public Actions createActionBuilder(WebDriver driver){
+    public Actions createActionBuilder(WebDriver driver) {
         return new Actions(driver);
     }
 
 
-    public Action dragAndDropToElement(WebDriver driver, By sourceLoc, By targetLoc){
+    public Action dragAndDropToElement(WebDriver driver, By sourceLoc, By targetLoc) {
         return createActionBuilder(driver)
-                .dragAndDrop(getElement(driver,sourceLoc), getElement(driver,targetLoc))
+                .dragAndDrop(getElement(driver, sourceLoc), getElement(driver, targetLoc))
                 .build();
     }
 
-    public Action moveToElement(WebDriver driver, By loc){
+    public Action moveToElement(WebDriver driver, By loc) {
         return createActionBuilder(driver)
                 .moveToElement(getElement(driver, loc))
                 .build();
     }
 
-    public Action moveToElementAndClick(WebDriver driver, By loc){
+    public Action moveToElementAndClick(WebDriver driver, By loc) {
         return createActionBuilder(driver)
                 .moveToElement(getElement(driver, loc))
                 .click(getElement(driver, loc))
@@ -149,7 +148,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
      *
      * @param locator text used as reference
      */
-    public void jsSendKeys(WebDriver driver,By locator, String value) {
+    public void jsSendKeys(WebDriver driver, By locator, String value) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         WebElement elem = getElement(driver, locator);
         if (elem != null) {
@@ -166,7 +165,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         WebElement elem = getElement(driver, locator);
         if (elem != null) {
             jse.executeScript("arguments[0].scrollIntoView();", elem);
-        }else{
+        } else {
             throw new SkipException("Locator was not present " + locator);
         }
     }
@@ -176,7 +175,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         if (elem != null) {
             log.info("Scrolling to element: " + elem.toString());
             jse.executeScript("arguments[0].scrollIntoView();", elem);
-        }else{
+        } else {
             throw new SkipException("Locator was not present");
         }
     }
@@ -188,13 +187,14 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
      */
     public void jsClick(WebDriver driver, WebElement element) {
         JavascriptExecutor executor = (JavascriptExecutor) driver;
-        if(element!=null){
+        if (element != null) {
             log.info("jsClick: Scrolling to element: " + element.toString());
             executor.executeScript("arguments[0].click();", element);
-        }else{
+        } else {
             throw new SkipException("Locator was not present");
         }
     }
+
     /**
      * click using javascript
      *
@@ -203,10 +203,10 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
     public void jsClick(WebDriver driver, By locator) {
         JavascriptExecutor jse = (JavascriptExecutor) driver;
         log.info("looking to element: " + locator.toString());
-        WebElement elem = driver.findElement(locator) != null ? driver.findElement(locator): null;
+        WebElement elem = driver.findElement(locator) != null ? driver.findElement(locator) : null;
         if (elem != null) {
             jse.executeScript("arguments[0].click();", elem);
-        }else{
+        } else {
             throw new SkipException("jsClick: Locator was not present " + locator);
         }
     }
@@ -234,7 +234,7 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
      */
     public void setAttribute(WebDriver driver, By locator, String key, String value) {
         JavascriptExecutor executor = (JavascriptExecutor) driver;
-        WebElement elem = driver.findElement(locator) != null ? driver.findElement(locator): null;
+        WebElement elem = driver.findElement(locator) != null ? driver.findElement(locator) : null;
         if (elem != null) {
             executor.executeScript(String.format("arguments[0].setAttribute('%s', '%s');", key, value), elem);
         } else {
@@ -251,8 +251,8 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
                 .pollingEvery(Duration.ofSeconds(3))
                 .ignoring(NoSuchElementException.class);
         wait.until(webDriver -> ((JavascriptExecutor) webDriver)
-                        .executeScript("return document.readyState")
-                        .equals("complete"));
+                .executeScript("return document.readyState")
+                .equals("complete"));
 
     }
 
@@ -323,26 +323,37 @@ public class WebDriverHelper extends WebDriverDataManagementHelper{
         return value;
     }
 
-    public void takeScreenShot(WebDriver driver) throws IOException {
-        log.info("Saving screen shot");
-        File destFile = new File(getCurrentPath() + "/target/screenshots/"
-                + UUID.randomUUID()
-                + ".jpg");
-        FileUtils.copyFile(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE), destFile);
+
+
+    private static String getScreenshotPath() {
+        return getCurrentPath() + "/target/screenshots/";
     }
 
-    public void takeScreenShot(WebDriver driver, Scenario scenario) throws IOException {
-        log.info("Saving screen shot");
-        byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-        File destFile = new File(getCurrentPath() + "/target/screenshots/"
-                + scenario.getName()
-                + scenario.getId() + ".jpg");
+    private static File getScreenshotRawFile(){
+        return new File(getScreenshotPath()
+                + UUID.randomUUID() + ".jpg");
+    }
 
-        scenario.attach(screenshot, "jpg", scenario.getId()
+    public static String takeScreenShot(WebDriver driver) throws IOException {
+        log.info("Saving local screenshot");
+        File newScreenShot = getScreenshotRawFile();
+        FileUtils.copyFile(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE), newScreenShot);
+        return newScreenShot.getAbsolutePath();
+    }
+
+    public static void takeScreenShot(WebDriver driver, Scenario scenario) throws IOException {
+        log.info("Saving screenshot");
+
+        //DIRECTLY INTO REPORT
+        byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+        scenario.attach(screenshot, "jpg",
+                scenario.getId()
                 + "_"
                 + scenario.getName().replace(" ", "_")
                 + ".jpg");
-        FileUtils.copyFile(((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE), destFile);
+
+        //ATTACHING LOCAL FILE
+        scenario.attach(getScreenshotPath(), "jpg", takeScreenShot(driver));
     }
 
 }

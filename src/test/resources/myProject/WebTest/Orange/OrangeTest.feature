@@ -1,4 +1,4 @@
-@OrangeWebTest
+@OrangeWebTest @WebTesting
 Feature: Login Test in Orange portal
 
   Scenario: Test Login Portal steps
@@ -6,6 +6,7 @@ Feature: Login Test in Orange portal
       And The User fill password text box
       And The User clicks Login button
       Then Verify the user is logged in
+      And I saved a screenshot
 
   @IGNORE
   Scenario: Get System Users from User list
@@ -17,3 +18,4 @@ Feature: Login Test in Orange portal
     When the Admin user is Logged in
     And The user go to System user list
     When Verify Admin user is present in the list
+    And I saved a screenshot

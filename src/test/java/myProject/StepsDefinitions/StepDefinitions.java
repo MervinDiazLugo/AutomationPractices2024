@@ -1,6 +1,8 @@
 package myProject.StepsDefinitions;
 
+import config.web.WebDriverHelper;
 import config.web.WebDriverProperties;
+import io.cucumber.java.Scenario;
 import io.cucumber.java.en.*;
 
 import lombok.extern.java.Log;
@@ -12,14 +14,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
+import java.io.IOException;
 import java.util.List;
 
+
 @Log
-public class StepDefinitions {
+public class StepDefinitions extends WebDriverHelper {
 
     WebDriver driver = null;
+    Scenario scenario = null;
     public StepDefinitions() {
         driver = Hooks.driver;
+        scenario = Hooks.scenario;
     }
 
     OrangeHRMPage orangeHRMPage = new OrangeHRMPage();
@@ -118,5 +124,10 @@ public class StepDefinitions {
     @Then("I am filling out the registration form with values:")
     public void iFillRegistrationFormWithValues(List<List<String>> table) {
         emergenciasPage.setLastStepTextBoxes(driver, table);
+    }
+
+    @And("I saved a screenshot")
+    public void iSavedAScreenshot() throws IOException {
+        takeScreenShot(driver, scenario);
     }
 }

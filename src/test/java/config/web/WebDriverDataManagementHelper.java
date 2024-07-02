@@ -1,5 +1,6 @@
 package config.web;
 
+import com.github.javafaker.Faker;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONObject;
@@ -23,8 +24,9 @@ import static config.web.WebDriverFactory.getCurrentPath;
 public class WebDriverDataManagementHelper {
 
     private static final String FORMAT_DATE = "yyyy-MM-dd'T'HH:mm:ss";
-
+    Faker faker = new Faker();
     public JSONObject testData = setTestData();
+
 
     public JSONObject setTestData() {
         JSONObject data = new JSONObject();
@@ -33,6 +35,8 @@ public class WebDriverDataManagementHelper {
         data.put("randomNumber", createRandomNumber());
         data.put("today", getTodayDate());
         data.put("lastYear", addDaysToDate("today", -365));
+        data.put("quote", faker.backToTheFuture().quote());
+        data.put("name", faker.backToTheFuture().character());
 
         JSONObject externalData = initExternalTestData();
         if(!externalData.isEmpty()){
