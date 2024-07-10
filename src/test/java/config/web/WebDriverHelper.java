@@ -343,17 +343,21 @@ public class WebDriverHelper extends WebDriverDataManagementHelper {
 
     public static void takeScreenShot(WebDriver driver, Scenario scenario) throws IOException {
         log.info("Saving screenshot");
+        String scenarioName = scenario.getName().replace(" ", "_");
 
         //DIRECTLY INTO REPORT
         byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
         scenario.attach(screenshot, "jpg",
                 scenario.getId()
                 + "_"
-                + scenario.getName().replace(" ", "_")
+                + scenarioName
                 + ".jpg");
 
         //ATTACHING LOCAL FILE
-        scenario.attach(getScreenshotPath(), "jpg", takeScreenShot(driver));
+        scenario.attach(
+                getScreenshotPath()
+                , "jpg"
+                , takeScreenShot(driver));
     }
 
 }
