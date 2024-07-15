@@ -14,7 +14,7 @@ import org.testng.annotations.Parameters;
         plugin = {
                 "pretty",
                 "html:test-output",
-                "json:target/cucumber/cucumber.json",
+                "json:target/cucumber/emergencias-cucumber.json",
                 "html:target/cucumber-html-report.html"
         })
 @Log

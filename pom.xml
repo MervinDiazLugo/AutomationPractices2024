@@ -17,7 +17,7 @@
         <com.google.code.gson>2.10.1</com.google.code.gson>
         <maven.common.plugin>3.0.0-M1</maven.common.plugin>
         <maven.cucumber.reporting.version>5.7.8</maven.cucumber.reporting.version>
-        <suiteFile>EmergenciasWebRunnerWithParams.xml,ExamplesWebRunner.xml</suiteFile>
+        <suiteFile>EmergenciasWebRunnerWithParams.xml,ExamplesWebRunner.xml,OrangeWebRunnerWithParams.xml</suiteFile>
     </properties>
 
     <dependencyManagement>
@@ -159,7 +159,7 @@
                             <outputDirectory>${project.build.directory}/cucumber-report-html</outputDirectory>
                             <inputDirectory>${project.build.directory}</inputDirectory>
                             <jsonFiles>
-                                <param>**/cucumber.json</param>
+                                <param>**/*-cucumber.json</param>
                             </jsonFiles>
                         </configuration>
                     </execution>
