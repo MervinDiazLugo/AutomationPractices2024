@@ -6,7 +6,9 @@ import io.cucumber.java.Scenario;
 import io.cucumber.java.en.*;
 
 import lombok.extern.java.Log;
+import myProject.web.Pages.ActionChainsPage;
 import myProject.web.Pages.EmergenciasPage;
+import myProject.web.Pages.OmayoPage;
 import myProject.web.Pages.OrangeHRMPage;
 import org.json.simple.JSONObject;
 import org.junit.jupiter.api.Assertions.*;
@@ -26,11 +28,14 @@ public class StepDefinitions extends WebDriverHelper {
     public StepDefinitions() {
         driver = Hooks.driver;
         scenario = Hooks.scenario;
+        windowsHandle.put("main", driver.getWindowHandle());
     }
 
     OrangeHRMPage orangeHRMPage = new OrangeHRMPage();
 
+    OmayoPage omayoPage = new OmayoPage();
     EmergenciasPage emergenciasPage = new EmergenciasPage();
+    ActionChainsPage actionChainsPage = new ActionChainsPage();
     WebDriverProperties wdp = new WebDriverProperties();
 
     @Given("^an example scenario$")
@@ -121,13 +126,86 @@ public class StepDefinitions extends WebDriverHelper {
         emergenciasPage.waitForLastStepElements(driver);
     }
 
-    @Then("I am filling out the registration form with values:")
+    @Then("^I am filling out the registration form with values:$")
     public void iFillRegistrationFormWithValues(List<List<String>> table) {
         emergenciasPage.setLastStepTextBoxes(driver, table);
     }
 
-    @And("I saved a screenshot")
+    @And("^I saved a screenshot$")
     public void iSavedAScreenshot() throws IOException {
         takeScreenShot(driver, scenario);
+    }
+
+    @Then("^I filled the sample textbox with (.*?)$")
+    public void iFilledTheSampleTextBoxWith(String text) {
+        omayoPage.selenium1TextBoxTest1(driver, text);
+    }
+
+    @Then("^I filled the other sample textbox$")
+    public void iFilledTheOtherSampleTextbox() {
+        omayoPage.selenium1TextBoxTest(driver);
+    }
+
+    @Then("^I selected the sample dropdown with text (.*?)$")
+    public void iSelectedTheSampleDropdownWithText(String text) {
+        omayoPage.seleniumDropdownTest1(driver, text);
+    }
+
+    @Then("^I selected the other sample multiselect$")
+    public void iSelectedTheOtherSampleMultiselect() {
+        omayoPage.seleniumMultiSelectTest1(driver);
+    }
+
+    @Then("^I selected the dropdown using filters$")
+    public void iSelectedTheDropdownUsingFilters() {
+        omayoPage.seleniumDropdownFilterTest1(driver);
+    }
+
+    @Then("^I searching for a element with text (.*?)$")
+    public void iSearchingForAElementWithTextDoc(String text) {
+        WebElement table1Elem = omayoPage.findInWebElementList(driver, text);
+        Assert.assertNotNull(table1Elem, "Element was not present");
+    }
+
+    @Then("^I closed the system alert$")
+    public void iClosedTheSystemAlert() {
+        omayoPage.selenium5AlertPrompt1(driver);
+    }
+
+    @Then("^I switched to the window called (.*?)$")
+    public void iSwitchedToTheWindowCalledSelenium(String name) {
+        getWindowsHandle(driver, name);
+    }
+
+
+    @Then("^I clicked on (.*?) link$")
+    public void iClickedOnSeleniumLink(String name) {
+        omayoPage.openLinkPage(driver, name);
+    }
+
+    @Then("^I switched through the frames$")
+    public void iSwitchedThroughTheFrames() {
+        omayoPage.iSwitchedThroughTheFrames(driver);
+    }
+
+    @Then("^I modified table attributes$")
+    public void iModifiedTableAttributes() throws IOException {
+        omayoPage.iModifiedTableAttributes(driver);
+        takeScreenShot(driver, scenario);
+    }
+
+    @Then("^I navigated to (.*?)$")
+    public void iNavigatedTo(String url) {
+        driver.get(url);
+    }
+
+    @Then("^I drag and drop two elements$")
+    public void iDragAndDropTwoElements() {
+        actionChainsPage.dragAndDropElement(driver);
+    }
+
+    @Then("^I moved and click element$")
+    public void iMovedAndClickElement() {
+        actionChainsPage.moveAndClick(driver);
     }
 }

@@ -1,6 +1,6 @@
 package myProject.StepsDefinitions;
 
-import config.web.WebDriverHelper;
+import config.web.WebDriverProperties;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
@@ -19,7 +19,17 @@ public class Hooks {
     public static WebDriver driver;
     public static Scenario scenario = null;
 
-    @Before("@WebTesting")
+    @Before(value = "@OmayoWebTest", order = 0)
+    public void initOmayoWebDriver() throws Exception {
+        WebDriverProperties.setTestNgClient("omayo");
+    }
+
+    @Before(value = "@OrangeWebTest", order = 0)
+    public void initOrangeWebTest() throws Exception {
+        WebDriverProperties.setTestNgClient("orange");
+    }
+
+    @Before(value = "@WebTesting")
     public void initWebDriver(Scenario scenario) throws Exception {
         this.scenario = scenario;
         log.info("***************************************************");
@@ -28,8 +38,7 @@ public class Hooks {
         driver =  WebDriverConfig.initSeleniumConfig();
     }
 
-
-    @After("@WebTesting")
+    @After(value = "@WebTesting")
     public void tearDown(Scenario scenario) throws IOException {
         if (!StringUtils.equalsIgnoreCase(
                 scenario.getStatus().toString(),"PASSED")) {
