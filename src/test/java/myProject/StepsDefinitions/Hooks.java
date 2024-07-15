@@ -19,7 +19,7 @@ public class Hooks {
     public static WebDriver driver;
     public static Scenario scenario = null;
 
-    @Before(value = "@OmayoWebTest", order = 0)
+    @Before(value = "@ExamplesWebTest", order = 0)
     public void initOmayoWebDriver() throws Exception {
         WebDriverProperties.setTestNgClient("omayo");
     }

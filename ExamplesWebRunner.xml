@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Examples">
+
+    <test thread-count="1" name="Test" parallel="tests">
+        <classes>
+            <class name="myProject.runners.web.ExamplesWebRunner"/>
+        </classes>
+    </test>
+</suite>

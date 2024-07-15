@@ -1,4 +1,4 @@
-@OmayoWebTest @WebTesting
+@ExamplesWebTest @WebTesting
 Feature: Examples all selenium features
 
   Scenario: Selenium TextBox Test
