@@ -3,6 +3,7 @@ package config.web;
 import com.github.javafaker.Faker;
 import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -24,6 +25,7 @@ import static config.web.WebDriverFactory.getCurrentPath;
 public class WebDriverDataManagementHelper {
 
     private static final String FORMAT_DATE = "yyyy-MM-dd'T'HH:mm:ss";
+    private static final String INTERNAL_TEST_DATA = "/src/test/resources/data/externalData.json";
     Faker faker = new Faker();
     public JSONObject testData = setTestData();
 
@@ -38,7 +40,7 @@ public class WebDriverDataManagementHelper {
         data.put("quote", faker.backToTheFuture().quote());
         data.put("name", faker.backToTheFuture().character());
 
-        JSONObject externalData = initExternalTestData();
+        JSONObject externalData = initExternalTestData(INTERNAL_TEST_DATA);
         if(!externalData.isEmpty()){
             data.putAll(externalData);
         }
@@ -114,12 +116,12 @@ public class WebDriverDataManagementHelper {
         return format.format(currentDatePlusDays);
     }
 
-    private JSONObject initExternalTestData() {
+    public static JSONObject initExternalTestData(String rawFileData) {
         String bodyPath;
         JSONObject jsonData = null;
         try {
             bodyPath = new String(Files.readAllBytes(Paths.get(getCurrentPath()
-                            + "/src/test/resources/data/externalData.json")));
+                            + rawFileData)));
         } catch (IOException | NullPointerException e) {
             throw new SkipException("check configProperties or path variable " + e.getMessage());
         }
@@ -128,6 +130,30 @@ public class WebDriverDataManagementHelper {
             try {
                 JSONParser parser = new JSONParser();
                 jsonData = (JSONObject) parser.parse(bodyPath);
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            log.info("data.json is empty");
+        }
+
+        return jsonData;
+    }
+
+    public static JSONArray initExternalData(String rawFileData) {
+        String bodyPath;
+        JSONArray jsonData = null;
+        try {
+            bodyPath = new String(Files.readAllBytes(Paths.get(getCurrentPath()
+                    + rawFileData)));
+        } catch (IOException | NullPointerException e) {
+            throw new SkipException("check configProperties or path variable " + e.getMessage());
+        }
+
+        if (StringUtils.isNotEmpty(bodyPath)) {
+            try {
+                JSONParser parser = new JSONParser();
+                jsonData = (JSONArray) parser.parse(bodyPath);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
