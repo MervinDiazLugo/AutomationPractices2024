@@ -9,6 +9,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.testng.SkipException;
 
+import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -26,6 +28,8 @@ public class WebDriverDataManagementHelper {
 
     private static final String FORMAT_DATE = "yyyy-MM-dd'T'HH:mm:ss";
     private static final String INTERNAL_TEST_DATA = "/src/test/resources/data/externalData.json";
+    private static final String CUCUMBER_REPORTS_FOLDER = "/target/cucumber/";
+
     Faker faker = new Faker();
     public JSONObject testData = setTestData();
 
@@ -144,8 +148,7 @@ public class WebDriverDataManagementHelper {
         String bodyPath;
         JSONArray jsonData = null;
         try {
-            bodyPath = new String(Files.readAllBytes(Paths.get(getCurrentPath()
-                    + rawFileData)));
+            bodyPath = new String(Files.readAllBytes(Paths.get(rawFileData)));
         } catch (IOException | NullPointerException e) {
             throw new SkipException("check configProperties or path variable " + e.getMessage());
         }
@@ -162,6 +165,64 @@ public class WebDriverDataManagementHelper {
         }
 
         return jsonData;
+    }
+
+    public static void extractMetricsFromReport() throws ParseException {
+        JSONParser parser = new JSONParser();
+        String feature;
+        String tags = "";
+        String start_timestamp = "";
+        String name = "";
+        String status = "";
+        JSONArray report = null;
+
+        File[] listFiles = new File(getCurrentPath() + CUCUMBER_REPORTS_FOLDER).listFiles();
+
+        if(listFiles!=null){
+            for(File f : listFiles){
+                try {
+                    report = WebDriverDataManagementHelper.initExternalData(f.getAbsolutePath());
+                    if(report!=null){
+                        for(Object obj : report) {
+                            JSONObject jsonData = (JSONObject) parser.parse(obj.toString());
+                            JSONArray rawScenarios = (JSONArray) jsonData.get("elements");
+                            JSONArray rawTags = (JSONArray) jsonData.get("tags");
+
+                            feature = jsonData.get("name").toString();
+
+                            for (int i = 0; rawTags.size() > i; i++) {
+                                JSONObject tagData = (JSONObject) parser.parse(rawTags.get(i).toString());
+                                tags = tags.concat(tagData.get("name") + " ");
+                            }
+                            System.out.println("###############");
+                            System.out.println(feature);
+                            System.out.println(tags);
+                            System.out.println("###############");
+
+                            for (int i = 0; rawScenarios.size() > i; i++) {
+                                JSONObject scenariosData = (JSONObject) parser.parse(rawScenarios.get(i).toString());
+                                name = scenariosData.get("name").toString();
+                                start_timestamp = scenariosData.get("start_timestamp").toString();
+
+                                JSONArray rawStatus = (JSONArray) scenariosData.get("after");
+                                JSONObject rawStatusData = (JSONObject) parser.parse(rawStatus.get(0).toString());
+                                JSONObject result = (JSONObject) rawStatusData.get("result");
+                                status = result.get("status").toString();
+
+                                System.out.println(name);
+                                System.out.println(start_timestamp);
+                                System.out.println(status);
+                                System.out.println("###############");
+                            }
+
+                        }
+                    }
+                } catch (NullPointerException e) {
+                    throw new SkipException("check configProperties or path variable " + e.getMessage());
+                }
+            }
+        }
+
     }
 
     public JSONObject getUsersBundle(){
